@@ -40,7 +40,18 @@ class SettingRepository extends AbstractRepository implements ISettingRepository
 
         try {
 
-            $content = $user->sets()->withoutGlobalScope(StrictScope::class)->updateOrCreate([ "key" => $identifier, ], [ "value" => $data["value"], ]);
+            $content = $user->sets()->withoutGlobalScope(StrictScope::class);
+            $contented = $content->find($identifier);
+
+            if ($contented) {
+
+                $content->update([ "value" => $data["value"], ]);
+                $content = $contented;
+
+            } else {
+
+                $content = $content->create([ "key" => $identifier, "value" => $data["value"], ]);
+            }
 
             DB::commit();
 
