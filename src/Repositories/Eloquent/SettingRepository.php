@@ -46,7 +46,7 @@ class SettingRepository extends AbstractRepository implements ISettingRepository
             if ($contented) {
 
                 $content->update([ "value" => $data["value"], ]);
-                $content = $contented;
+                $content = $content->first();
 
             } else {
 
